@@ -1,0 +1,20 @@
+{% extends "template.html.twig" %}
+{% block body %}
+
+
+    {% block pageTitle %}
+        <h1>Lista de todos</h1>
+    {% endblock %}
+
+    <ol class="list-group">
+    {% for todo, content in app.session.get('todos') %}        
+        <li class="list-group-item">{{todo}} {{content}}</li>
+    {% endfor %}
+    </ol>
+    
+
+{% endblock %}
+
+{% block title %}
+    Todo
+{% endblock %}
