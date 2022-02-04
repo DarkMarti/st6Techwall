@@ -1,20 +1,49 @@
-{% extends 'base.html.twig' %}
+{% extends 'template.html.twig' %}
 
-{% block title %}Hello PersonaController!{% endblock %}
+{% block title %}Lista de personas{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+   {% for persona in personas %}
+   
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{persona.name}} </h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{persona.firstname}} {{persona.name}}</h6>
+            <p class="card-text">Age: {{persona.age}} </p>
+            <a href="{{ path('persona.detail', {id:persona.id}) }}" class="card-link">
+                <i class="fas fa-info-circle"></i>
+            </a>     
+            {# {% if is_granted('ROLE_ADMIN') %} #}
+            <a href="{{ path('persona.delete', {id:persona.id}) }}" class="card-link">
+                <i class="fas fa-user-times"></i>
+            </a>            
+            <a href="{{ path('persona.edit', {id:persona.id}) }}" class="card-link">
+                <i class="fas fa-user-edit"></i>
+            </a>     
+            {# {% endif %} #}      
+        </div>
+        </div>
+    {% endfor %}
+    
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {% if isPaginated is defined and isPaginated %}
+    <div class="row mt-2">
+        <nav aria-label="col Page navigation example">
+            <ul class="pagination">
+                {% if page != 1 %}                
+                    <li class="page-item"><a class="page-link" href="{{ path('persona.list.alls', {page:page - 1, nbre:nbre}) }}">Previous</a></li>                
+                {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/st6Techwall/src/Controller/PersonaController.php'|file_link(0) }}">src/Controller/PersonaController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/st6Techwall/templates/persona/index.html.twig'|file_link(0) }}">templates/persona/index.html.twig</a></code></li>
-    </ul>
-</div>
+                {% for i in range(1,nbrePage) %}  
+                    <li class="page-item"><a class="page-link" href="{{ path('persona.list.alls', {page:page, nbre:nbre}) }}">{{i}}</a></li>     
+                {% endfor %}  
+
+                {% if nbrePage != 1 %}                
+                    <li class="page-item"><a class="page-link" href="{{ path('persona.list.alls', {page:page + 1, nbre:nbre}) }}">Next</a></li>                
+                {% endif %}
+            </ul>
+        </nav>
+    </div>    
+    {% endif %}
+
 {% endblock %}
